@@ -16,7 +16,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", Index)
 	router.HandleFunc("/api/product/findall", product_api.FindAll).Methods("GET")
-
+	router.HandleFunc("/api/product/search/{keyword}", product_api.Search).Methods("GET")
 	fmt.Println("Listen port")
 	err := http.ListenAndServe(":5000", router)
 	if err != nil {

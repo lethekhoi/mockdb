@@ -1,0 +1,14 @@
+mode: set
+mockdb/product/product.go:18.43,22.2 1 1
+mockdb/product/product.go:24.88,28.16 3 1
+mockdb/product/product.go:31.2,31.22 1 1
+mockdb/product/product.go:28.16,30.3 1 1
+mockdb/product/product.go:34.104,37.16 2 1
+mockdb/product/product.go:40.2,40.22 1 1
+mockdb/product/product.go:37.16,39.3 1 1
+mockdb/product/product_mock.go:26.65,30.2 3 1
+mockdb/product/product_mock.go:33.63,35.2 1 1
+mockdb/product/product_mock.go:38.83,44.2 5 1
+mockdb/product/product_mock.go:47.77,50.2 2 1
+mockdb/product/product_mock.go:53.93,59.2 5 1
+mockdb/product/product_mock.go:62.80,65.2 2 1

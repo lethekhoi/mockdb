@@ -7,6 +7,8 @@ import (
 	"mockdb/models"
 	"mockdb/product"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func FindAll(response http.ResponseWriter, request *http.Request) {
@@ -18,6 +20,25 @@ func FindAll(response http.ResponseWriter, request *http.Request) {
 		productModel := models.CreateProductModel(db)
 		var service = product.NewService(productModel)
 		products, err2 := service.FindAll(context.TODO())
+		if err2 != nil {
+			respondWithError(response, http.StatusBadRequest, err.Error())
+		} else {
+			respondWithJson(response, http.StatusOK, products)
+		}
+	}
+}
+
+func Search(response http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+	keyword := vars["keyword"]
+	db, err := config.GetDB()
+	defer db.Close()
+	if err != nil {
+		respondWithError(response, http.StatusBadRequest, err.Error())
+	} else {
+		productModel := models.CreateProductModel(db)
+		var service = product.NewService(productModel)
+		products, err2 := service.Search(context.TODO(), keyword)
 		if err2 != nil {
 			respondWithError(response, http.StatusBadRequest, err.Error())
 		} else {

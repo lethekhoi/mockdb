@@ -3,6 +3,7 @@ package product_test
 import (
 	"context"
 	"mockdb/entities"
+	"mockdb/errors"
 	"mockdb/product"
 	"testing"
 
@@ -41,10 +42,10 @@ func TestFindAll(t *testing.T) {
 			name:     "Not Found Any Product",
 			products: []entities.Product{},
 			tearDown: func() {
-				repoMocked.EXPECT().FindAll(gomock.Any()).Times(1).Return([]entities.Product{}, product.ErrNotFound)
+				repoMocked.EXPECT().FindAll(gomock.Any()).Times(1).Return([]entities.Product{}, errors.ErrNotFound)
 
 			},
-			ouput: product.ErrNotFound,
+			ouput: errors.ErrNotFound,
 		},
 	}
 
@@ -98,10 +99,10 @@ func TestSearch(t *testing.T) {
 			products: []entities.Product{},
 			tearDown: func() {
 
-				repoMocked.EXPECT().Search(gomock.Any(), "1").Times(1).Return([]entities.Product{}, product.ErrNotFound)
+				repoMocked.EXPECT().Search(gomock.Any(), "1").Times(1).Return([]entities.Product{}, errors.ErrNotFound)
 
 			},
-			ouput: product.ErrNotFound,
+			ouput: errors.ErrNotFound,
 		},
 	}
 
@@ -117,4 +118,50 @@ func TestSearch(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestCreate(t *testing.T) {
+	ctr := gomock.NewController(t)
+	repoMocked := product.NewMockrepository(ctr)
+	service := product.NewService(repoMocked)
+	product := &entities.Product{
+
+		Id:       1,
+		Name:     "1",
+		Price:    1,
+		Quantity: 1,
+	}
+	testCases := []struct {
+		name     string
+		input    *entities.Product
+		tearDown func()
+		ouput    error
+	}{
+		{
+			name:  "Create success",
+			input: product,
+			tearDown: func() {
+				repoMocked.EXPECT().Create(gomock.Any(), product).Times(1).Return(nil)
+			},
+			ouput: nil,
+		},
+		{
+			name:  "Create fail",
+			input: product,
+			tearDown: func() {
+				repoMocked.EXPECT().Create(gomock.Any(), product).Times(1).Return(errors.ErrCreateFail)
+			},
+			ouput: errors.ErrCreateFail,
+		},
+	}
+	for _, test := range testCases {
+		t.Run(test.name, func(t *testing.T) {
+			test.tearDown()
+			err := service.Create(context.TODO(), test.input)
+			if err != test.ouput {
+				t.Errorf("got err = %v, expects err = %v", err, test.ouput)
+			}
+		})
+	}
+
 }

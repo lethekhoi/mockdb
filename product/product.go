@@ -10,6 +10,7 @@ type (
 	repository interface {
 		FindAll(ctx context.Context) (product []entities.Product, err error)
 		Search(ctx context.Context, ID string) (product []entities.Product, err error)
+		Create(ctx context.Context, product *entities.Product) (err error)
 	}
 	Service struct {
 		repo repository
@@ -39,4 +40,14 @@ func (s *Service) Search(ctx context.Context, keyword string) (products []entiti
 		return products, err
 	}
 	return products, nil
+}
+
+func (s *Service) Create(ctx context.Context, product *entities.Product) (err error) {
+	fmt.Println("create")
+	err = s.repo.Create(ctx, product)
+	if err != nil {
+		return err
+	}
+	return
+
 }

@@ -63,3 +63,17 @@ func (mr *MockrepositoryMockRecorder) Search(ctx, ID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Search", reflect.TypeOf((*Mockrepository)(nil).Search), ctx, ID)
 }
+
+// Create mocks base method
+func (m *Mockrepository) Create(ctx context.Context, product *entities.Product) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, product)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create
+func (mr *MockrepositoryMockRecorder) Create(ctx, product interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*Mockrepository)(nil).Create), ctx, product)
+}

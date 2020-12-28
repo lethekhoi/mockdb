@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"mockdb/config"
+	"mockdb/entities"
 	"mockdb/models"
 	"mockdb/product"
 	"net/http"
@@ -11,22 +12,52 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func FindAll(response http.ResponseWriter, request *http.Request) {
+type (
+	service interface {
+		FindAll(ctx context.Context) (product []entities.Product, err error)
+	}
+	Handler struct {
+		srv service
+	}
+)
+
+func NewHandler(srv service) *Handler {
+	return &Handler{
+		srv: srv,
+	}
+}
+
+func (h *Handler) FindAll(response http.ResponseWriter, request *http.Request) {
 	db, err := config.GetDB()
 	defer db.Close()
 	if err != nil {
 		respondWithError(response, http.StatusBadRequest, err.Error())
 	} else {
-		productModel := models.CreateProductModel(db)
-		var service = product.NewService(productModel)
-		products, err2 := service.FindAll(context.TODO())
+		products, err2 := h.srv.FindAll(context.TODO())
 		if err2 != nil {
-			respondWithError(response, http.StatusBadRequest, err.Error())
+			respondWithError(response, http.StatusBadRequest, err2.Error())
 		} else {
 			respondWithJson(response, http.StatusOK, products)
 		}
 	}
 }
+
+// func FindAll(response http.ResponseWriter, request *http.Request) {
+// 	db, err := config.GetDB()
+// 	defer db.Close()
+// 	if err != nil {
+// 		respondWithError(response, http.StatusBadRequest, err.Error())
+// 	} else {
+// 		productModel := models.CreateProductModel(db)
+// 		var service = product.NewService(productModel)
+// 		products, err2 := service.FindAll(context.TODO())
+// 		if err2 != nil {
+// 			respondWithError(response, http.StatusBadRequest, err.Error())
+// 		} else {
+// 			respondWithJson(response, http.StatusOK, products)
+// 		}
+// 	}
+// }
 
 func Search(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
@@ -43,6 +74,26 @@ func Search(response http.ResponseWriter, request *http.Request) {
 			respondWithError(response, http.StatusBadRequest, err.Error())
 		} else {
 			respondWithJson(response, http.StatusOK, products)
+		}
+	}
+}
+
+func Create(response http.ResponseWriter, request *http.Request) {
+	var productitem entities.Product
+	err := json.NewDecoder(request.Body).Decode(&productitem)
+
+	db, err := config.GetDB()
+	defer db.Close()
+	if err != nil {
+		respondWithError(response, http.StatusBadRequest, err.Error())
+	} else {
+		productModel := models.CreateProductModel(db)
+		var service = product.NewService(productModel)
+		err2 := service.Create(context.TODO(), &productitem)
+		if err2 != nil {
+			respondWithError(response, http.StatusBadRequest, err.Error())
+		} else {
+			respondWithJson(response, http.StatusOK, productitem)
 		}
 	}
 }

@@ -1,0 +1,23 @@
+mode: set
+mockdb/apis/product_api/product_api.go:24.39,28.2 1 1
+mockdb/apis/product_api/product_api.go:30.80,33.16 3 1
+mockdb/apis/product_api/product_api.go:33.16,35.3 1 0
+mockdb/apis/product_api/product_api.go:35.8,37.18 2 1
+mockdb/apis/product_api/product_api.go:37.18,39.4 1 1
+mockdb/apis/product_api/product_api.go:39.9,41.4 1 1
+mockdb/apis/product_api/product_api.go:62.66,67.16 5 0
+mockdb/apis/product_api/product_api.go:67.16,69.3 1 0
+mockdb/apis/product_api/product_api.go:69.8,73.18 4 0
+mockdb/apis/product_api/product_api.go:73.18,75.4 1 0
+mockdb/apis/product_api/product_api.go:75.9,77.4 1 0
+mockdb/apis/product_api/product_api.go:81.66,87.16 5 0
+mockdb/apis/product_api/product_api.go:87.16,89.3 1 0
+mockdb/apis/product_api/product_api.go:89.8,93.18 4 0
+mockdb/apis/product_api/product_api.go:93.18,95.4 1 0
+mockdb/apis/product_api/product_api.go:95.9,97.4 1 0
+mockdb/apis/product_api/product_api.go:101.68,103.2 1 1
+mockdb/apis/product_api/product_api.go:104.76,109.2 4 1
+mockdb/apis/product_api/product_api_mock.go:26.59,30.2 3 1
+mockdb/apis/product_api/product_api_mock.go:33.57,35.2 1 1
+mockdb/apis/product_api/product_api_mock.go:38.80,44.2 5 1
+mockdb/apis/product_api/product_api_mock.go:47.74,50.2 2 1

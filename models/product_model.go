@@ -15,7 +15,7 @@ func CreateProductModel(db *sql.DB) *ProductModel {
 	return productModel
 }
 
-//FindAll
+//FindAll product
 func (productModel ProductModel) FindAll(ctx context.Context) (product []entities.Product, err error) {
 	rows, err := productModel.Db.Query("select * from product")
 	defer rows.Close()
@@ -47,7 +47,7 @@ func (productModel ProductModel) FindAll(ctx context.Context) (product []entitie
 	}
 }
 
-//SearchID
+//Search product by keyword
 func (productModel ProductModel) Search(ctx context.Context, keyword string) (product []entities.Product, err error) {
 	rows, err := productModel.Db.Query("select * from product where name like ?", "%"+keyword+"%")
 	defer rows.Close()
@@ -77,5 +77,18 @@ func (productModel ProductModel) Search(ctx context.Context, keyword string) (pr
 
 		}
 		return products, nil
+	}
+}
+
+//Create product
+func (productModel ProductModel) Create(ctx context.Context, product *entities.Product) (err error) {
+	result, err := productModel.Db.Exec("insert into product(name, price,quantity) values(?,?,?)", product.Name, product.Price, product.Quantity)
+
+	if err != nil {
+		return err
+	}
+	{
+		product.Id, _ = result.LastInsertId()
+		return nil
 	}
 }
